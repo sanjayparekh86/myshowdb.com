@@ -69,7 +69,7 @@
                         <div>
                             <input type="checkbox" name="remember" value="Remember me"><span>Remember me</span>
                         </div>
-                        <a href="#">Forget password ?</a>
+                        <a href="{{route('user.forgotPassword')}}">Forget password ?</a>
                     </div>
                 </div>
                 <div class="row">
@@ -259,8 +259,12 @@
                             </ul>
                         </li>
                         <li><a href="#">Help</a></li>
-                        <li class="loginLink"><a href="#">LOG In</a></li>
-                        <li class="btn signupLink"><a href="#">sign up</a></li>
+                        @if (auth()->check())
+                            <li class="btn primary"><a href="{{ route('user.profile') }}">Profile</a></li>
+                        @else
+                            <li class="loginLink"><a href="#">Log In</a></li>
+                            <li class="btn signupLink"><a href="#">Sign Up</a></li>
+                        @endif
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->
@@ -294,7 +298,7 @@
                     <ul>
                         <li><a href="#">About</a></li>
                         <li><a href="#">Blockbuster</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="{{route('inquiry.index')}}">Contact Us</a></li>
                         <li><a href="#">Forums</a></li>
                         <li><a href="#">Blog</a></li>
                         <li><a href="#">Help Center</a></li>
@@ -433,6 +437,7 @@
             $(this).removeClass("is-invalid");
             $(this).siblings("p.invalid-feedback").html("");
         });
+
     </script>
 
     @yield('customJs')

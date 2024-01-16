@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
+use App\Mail\ForgotPassword;
+use Illuminate\Support\Facades\Mail;
 use Exception;
 
 class HomeController extends Controller
@@ -63,7 +65,7 @@ class HomeController extends Controller
 
         if ($validator->passes()) {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-                return response()->json(['success' => true, 'redirect' => route('movie.home')]);
+                return response()->json(['success' => true, 'redirect' => route('movies.home')]);
             } else {
                 return response()->json(['success' => false, 'error' => 'Either email/password is incorrect']);
             }
@@ -122,5 +124,122 @@ class HomeController extends Controller
         }
 
         return redirect()->route('movies.home');
+    }
+
+    public function profile()
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+        // dump($user);
+        $isGoogleUser = Auth::user()->social_id !== null;
+        return view('front.profile.profile', [
+            'user' => $user,
+            'isGoogleUser' => $isGoogleUser
+        ]);
+    }
+
+    public function forgotPassword()
+    {
+        return view('front.password.forgot-password');
+    }
+
+    public function processForgotPassword(Request $request)
+    {
+        // Validate the email
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+        $password = str_pad(mt_rand(1, 99999999), 8, '0', STR_PAD_LEFT);
+
+        $user = User::where('email', $request->input('email'))->first();
+        $user->password = bcrypt($password);
+        $user->save();
+
+        Mail::to($user->email)->send(new ForgotPassword($user, $password));
+
+        session()->flash('success', 'Your password has sent in email has successfully');
+        return response()->json([
+            'status' => true,
+            'message' => 'Sent email successfully',
+        ]);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $userId = Auth::user()->id;
+        $isGoogleUser = Auth::user()->google_id !== null;
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'nick_name' => 'required',
+            'email' => $isGoogleUser ? 'required|email' : 'required|email|unique:users,email,' . $userId . ',id'
+        ]);
+
+        if ($validator->passes()) {
+            $user = User::find($userId);
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->nick_name = $request->nick_name;
+            if (!$isGoogleUser) {
+                $user->email = $request->email;
+            }
+            $user->save();
+
+            session()->flash('success', 'Profile Updated Successfully');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Profile Updated Successfully'
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
+
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'new_password' => 'required|min:8',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+
+        if ($validator->passes()) {
+            $user = User::select('id', 'password')->where('id', Auth::user()->id)->first();
+            // dd($user);
+            if (!Hash::check($request->old_password, $user->password)) {
+                session()->flash('error', 'Your old password is incorrect, please try again');
+                return response()->json([
+                    'status' => true,
+                ]);
+            }
+
+            User::where('id', $user->id)->update([
+                'password' => Hash::make($request->new_password),
+            ]);
+
+            session()->flash('success', 'Password change successfully');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Password change successfully'
+            ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
     }
 }

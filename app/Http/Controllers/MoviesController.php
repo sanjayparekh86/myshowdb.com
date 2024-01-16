@@ -14,8 +14,7 @@ class MoviesController extends Controller
     {
         $userId = auth()->check() ? auth()->user()->id : null;
 
-        $shows = ShowList::with([
-            'userRating' => function ($query) use ($userId) {
+        $shows = ShowList::with(['userRating' => function ($query) use ($userId) {
                 if ($userId) {
                     $query->where('user_id', $userId);
                 }
@@ -25,6 +24,7 @@ class MoviesController extends Controller
             ->take(10)
             ->get();
         // dump($shows);
+        // dump($userId);
         return view('front.movie.home', compact('shows'));
     }
 
@@ -120,7 +120,7 @@ class MoviesController extends Controller
     {
         $searchType = $request->input('type'); // Assuming 'type' is the parameter name for the show type
         $id = $request->input('id');
-        $userReview = null; // Assuming 'id' is the parameter name for the show ID
+        $userReview = null;
 
         $movieResults = [];  // Initialize as an empty array
         $seriesResults = []; // Initialize as an empty array
@@ -129,9 +129,20 @@ class MoviesController extends Controller
         $showDetails = ShowList::where('id', $id)->first();
         if ($showDetails) {
 
-            
+            $showDetails = json_decode($showDetails->other_details, true);
+
+
+            if ($searchType == '1') {
+                $searchType = 'movie';
+                $movieResults = $showDetails;
+            } elseif ($searchType == '0') {
+                $searchType = 'series';
+                $seriesResults = $showDetails;
+            }
+
             $userReview = UserRating::where('show_list_id', $id)->first();
-            dump($showDetails);
+            // dump($movieResults);
+            // dump($searchType);
         } else {
             if ($searchType == 'movie') {
                 // Fetch movie results from the API
@@ -157,7 +168,8 @@ class MoviesController extends Controller
             'movieResults' => $movieResults,
             'seriesResults' => $seriesResults,
             'searchType' => $searchType,
-            'userReview' => $userReview
+            'userReview' => $userReview,
+            'showDetails' => $showDetails,
         ]);
     }
 
