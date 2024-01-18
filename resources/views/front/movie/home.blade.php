@@ -8,7 +8,7 @@
                         <div class="hero-ct">
                             <h1> Watch List</h1>
                             <ul class="breadcumb">
-                                <li class="active"><a href="#">Home</a></li>
+                                <li class="active"><a href="{{route('movies.home')}}">Home</a></li>
                                 <li> <span class="ion-ios-arrow-right"></span> movie listing</li>
                             </ul>
                         </div>

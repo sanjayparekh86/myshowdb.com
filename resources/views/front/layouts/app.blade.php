@@ -172,7 +172,7 @@
                             <span></span>
                         </div>
                     </div>
-                    <a href="index-2.html"><img class="logo" src="images/logo1.png" alt="" width="119"
+                    <a href="{{route('front.index')}}"><img class="logo" src="images/logo1.png" alt="" width="119"
                             height="58"></a>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -261,6 +261,7 @@
                         <li><a href="#">Help</a></li>
                         @if (auth()->check())
                             <li class="btn primary"><a href="{{ route('user.profile') }}">Profile</a></li>
+                            <li class="btn primary"><a href="{{ route('auth.logout') }}">Logout</a></li>
                         @else
                             <li class="loginLink"><a href="#">Log In</a></li>
                             <li class="btn signupLink"><a href="#">Sign Up</a></li>
@@ -274,7 +275,7 @@
             <div class="top-search">
                 <select>
                     <option value="united">TV show</option>
-                    <option value="saab">Others</option>
+                    <option value="saab">Movies</option>
                 </select>
                 <input type="text" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
             </div>

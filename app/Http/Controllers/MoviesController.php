@@ -163,6 +163,7 @@ class MoviesController extends Controller
 
 
         // dump($seriesResults);
+        // dump($movieResults);
 
         return view('front.movie.show-detail', [
             'movieResults' => $movieResults,
