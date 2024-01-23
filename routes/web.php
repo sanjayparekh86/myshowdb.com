@@ -38,10 +38,9 @@ Route::get('/search', [MoviesController::class, 'search'])->name('movies.search'
 Route::get('/show', [MoviesController::class, 'show'])->name('movies.show');
 Route::get('/show-detail', [MoviesController::class, 'detail'])->name('show.detail');
 Route::post('/submit-review/{id}', [MoviesController::class, 'submitReview'])->name('show.review');
-Route::get('/page', [MoviesController::class, 'page'])->name('movie.page');
+// Route::get('/page', [MoviesController::class, 'page'])->name('movie.page');
 
 // Page Route
-Route::get('/{slug}', [HomeController::class, 'page'])->name('page.about');
 
 // Forgot Password
 Route::get('/forgot-password', [HomeController::class, 'forgotPassword'])->name('user.forgotPassword');
@@ -129,3 +128,5 @@ Route::group(['prefix' => 'admin'], function () {
         })->name('getSlug');
     });
 });
+Route::get('/{slug}', [HomeController::class, 'page'])->name('page.about');
+
