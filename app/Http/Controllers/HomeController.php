@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banners;
+use App\Models\Page;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 use App\Mail\ForgotPassword;
@@ -16,7 +19,16 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return view('front.index');
+        $banner = Banners::orderBy('id', 'DESC')->get();
+        $movieResults = Http::withToken(config('services.movie_api.token'))->get('https://api.themoviedb.org/3/movie/top_rated')->json();
+        $seriesResults = Http::withToken(config('services.movie_api.token'))->get('https://api.themoviedb.org/3/tv/top_rated')->json();
+
+
+        $data['banner'] = $banner;
+        $data['movieResults'] = $movieResults;
+        $data['seriesResults'] = $seriesResults;
+        // dump($seriesResults);
+        return view('front.index', $data);
     }
 
     public function processRegister(Request $request)
@@ -241,5 +253,24 @@ class HomeController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
+    }
+
+    public function term_condition(){
+        return view('front.static-pages.term_condition');
+    }
+    public function private_policy(){
+        return view('front.static-pages.private_policy');
+    }
+
+    public function about(){
+        return view('front.static-pages.about');
+    }
+
+    public function page($slug){
+        $page = Page::where('slug', $slug)->first();
+        // dd($page);
+        return view('front.static-pages.page', [
+            'page' => $page
+        ]);
     }
 }

@@ -3,7 +3,7 @@
     <a href="#" class="brand-link">
         <img src="{{ asset('admin-asset/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">LARAVEL SHOP</span>
+        <span class="brand-text font-weight-light">Admin Panel</span>
     </a>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -42,12 +42,7 @@
                         <p>Brands</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="" class="nav-link">
-                        <i class="nav-icon fas fa-tag"></i>
-                        <p>Products</p>
-                    </a>
-                </li>
+
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -74,12 +69,24 @@
                         <p>Users</p>
                     </a>
                 </li>
-                {{-- <li class="nav-item">
-                    <a href="pages.html" class="nav-link">
+                <li class="nav-item">
+                    <a href="{{route('banner.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-film"></i>
+                        <p>Banners</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('page.index')}}" class="nav-link">
                         <i class="nav-icon  far fa-file-alt"></i>
                         <p>Pages</p>
                     </a>
-                </li> --}}
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('inquiries.index')}}" class="nav-link">
+                        <i class="nav-icon  far fa-envelope"></i>
+                        <p>Inquiry</p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

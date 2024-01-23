@@ -62,7 +62,7 @@
     }
 
     .rating label:last-child .icon {
-        color: #000;
+        color: white;
     }
 
     .rating:not(:hover) label input:checked~.icon,
@@ -76,18 +76,17 @@
     }
 </style>
 @section('content')
-    <form action="" id="showReviewForm" method="post" name="showReviewForm">
+    <form action="" id="showReviewForm" method="post" name="showReviewForm" onsubmit="return checkLogin()">
         @csrf
         <div class="buster-light">
             <div class="hero mv-single-hero">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- <h1> movie listing - list</h1>
-                                                                                                                                                                                                                <ul class="breadcumb">
-                                                                                                                                                                                                                    <li class="active"><a href="#">Home</a></li>
-                                                                                                                                                                                                                    <li> <span class="ion-ios-arrow-right"></span> movie listing</li>
-                                                                                                                                                                                                                </ul> -->
+                            <ul class="breadcumb">
+                                <li class="active"><a href="#">Home</a></li>
+                                <li> <span class="ion-ios-arrow-right"></span> movie listing</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -98,10 +97,10 @@
                         <div class="col-md-4 col-sm-12 col-xs-12">
                             <div class="movie-img sticky-sb">
                                 @if ($searchType == 'movie')
-                                    <img src="{{ 'https://image.tmdb.org/t/p/w92' . $movieResults['poster_path'] }}"
+                                    <img src="{{ 'https://image.tmdb.org/t/p/original' . $movieResults['poster_path'] }}"
                                         alt="">
                                 @elseif ($searchType == 'series')
-                                    <img src="{{ 'https://image.tmdb.org/t/p/w92' . $seriesResults['poster_path'] }}"
+                                    <img src="{{ 'https://image.tmdb.org/t/p/original' . $seriesResults['poster_path'] }}"
                                         alt="">
                                 @endif
                                 <div class="movie-btn">
@@ -158,18 +157,6 @@
                                         <span>{{ \Carbon\Carbon::parse($seriesResults['first_air_date'])->format('Y') }}</span>
                                     </h1>
                                 @endif
-                                <div class="social-btn">
-                                    <a href="#" class="parent-btn"><i class="ion-heart"></i> Add to Favorite</a>
-                                    <div class="hover-bnt">
-                                        <a href="#" class="parent-btn"><i class="ion-android-share-alt"></i>share</a>
-                                        <div class="hvr-item">
-                                            <a href="#" class="hvr-grow"><i class="ion-social-facebook"></i></a>
-                                            <a href="#" class="hvr-grow"><i class="ion-social-twitter"></i></a>
-                                            <a href="#" class="hvr-grow"><i class="ion-social-googleplus"></i></a>
-                                            <a href="#" class="hvr-grow"><i class="ion-social-youtube"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="movie-rate">
                                     <div class="rate">
                                         <i class="ion-android-star"></i>
@@ -193,37 +180,39 @@
                                         <i class="ion-ios-star-outline"></i>
                                     </div>
                                 </div>
-                                <div class="check-box">
+                                <div>
                                     <input type="hidden" name="movieResults" value="{{ json_encode($movieResults) }}">
                                     <input type="hidden" name="seriesResults" value="{{ json_encode($seriesResults) }}">
                                     <input type="hidden" name="searchType" value="{{ $searchType }}">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="watch_status" id="wantToWatch"
-                                            value="0"
-                                            {{ old('watch_status', $userReview ? $userReview->watch_status : '') == '0' ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="wantToWatch" style="color: white">
-                                            Want to Watch
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="watch_status"
-                                            id="alreadyWatched" value="1"
-                                            {{ old('watch_status', $userReview ? $userReview->watch_status : '') == '1' ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="alreadyWatched" style="color: white">
-                                            Already Watched
-                                        </label>
+                                    <div class="check-box" style="display: flex; gap: 15px">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="watch_status"
+                                                id="wantToWatch" value="0"
+                                                {{ old('watch_status', $userReview ? $userReview->watch_status : '') == '0' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="wantToWatch" style="color: white">
+                                                Want to Watch
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="watch_status"
+                                                id="alreadyWatched" value="1"
+                                                {{ old('watch_status', $userReview ? $userReview->watch_status : '') == '1' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="alreadyWatched" style="color: white">
+                                                Already Watched
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div id="watchDateSection"
                                     style="display: {{ $userReview && $userReview->watch_date ? 'block' : 'none' }}; margin-top: 27px;">
                                     <!-- Input fields related to "Want to Watch" section go here -->
-                                    <label for="watch_date">Watch Date:</label>
+                                    <label for="watch_date" style="color: white">Watch Date:</label>
                                     <input type="date" id="watchDate" name="watch_date"
                                         value="{{ old('watch_date', $userReview ? $userReview->watch_date : '') }}">
                                     <button type="submit">Submit</button>
                                 </div>
                                 <div id="reviewSection"
-                                    style="display: {{ old('watch_status', $userReview ? $userReview->watch_status : '') == '1' ? 'block' : 'none' }}; margin-top: 80px;">
+                                    style="display: {{ old('watch_status', $userReview ? $userReview->watch_status : '') == '1' ? 'block' : 'none' }}; margin-top: 4px;">
                                     <!-- Input fields related to "Already Watched" section go here -->
                                     <div class="rating">
                                         <label>
@@ -262,7 +251,14 @@
                                             <span class="icon">★</span>
                                         </label>
                                     </div>
-                                    <label for="comment">Comment:</label>
+                                    <div id="watchdate"
+                                        style="display: {{ $userReview && $userReview->watch_date ? 'block' : 'none' }}; margin-top: 27px;">
+                                        <!-- Input fields related to "Want to Watch" section go here -->
+                                        <label for="watch_date" style="color: white">Watch Date:</label>
+                                        <input type="date" id="watchDate" name="watch_date"
+                                            value="{{ old('watch_date', $userReview ? $userReview->watch_date : '') }}">
+                                    </div>
+                                    <label for="comment" style="color: white">Comment:</label>
                                     <textarea id="comment" name="comment">{{ old('comment', $userReview ? $userReview->comment : '') }}</textarea>
                                     <button type="submit">Submit Review</button>
                                 </div>
@@ -294,9 +290,9 @@
                                                                     @if ($counter < 4)
                                                                         <a class="img-lightbox"
                                                                             data-fancybox-group="gallery"
-                                                                            href="{{ 'https://image.tmdb.org/t/p/w92' . $photo['file_path'] }}"><img
-                                                                                src="{{ 'https://image.tmdb.org/t/p/w92' . $photo['file_path'] }}"
-                                                                                alt=""></a>
+                                                                            href="{{ 'https://image.tmdb.org/t/p/original' . $photo['file_path'] }}"><img
+                                                                                src="{{ 'https://image.tmdb.org/t/p/original' . $photo['file_path'] }}"
+                                                                                alt="" style="width: 95px;"></a>
                                                                         @php $counter++; @endphp
                                                                     @else
                                                                     @break
@@ -308,9 +304,9 @@
                                                                 @if ($counter < 4)
                                                                     <a class="img-lightbox"
                                                                         data-fancybox-group="gallery"
-                                                                        href="{{ 'https://image.tmdb.org/t/p/w92' . $photo['file_path'] }}"><img
-                                                                            src="{{ 'https://image.tmdb.org/t/p/w92' . $photo['file_path'] }}"
-                                                                            alt=""></a>
+                                                                        href="{{ 'https://image.tmdb.org/t/p/original' . $photo['file_path'] }}"><img
+                                                                            src="{{ 'https://image.tmdb.org/t/p/original' . $photo['file_path'] }}"
+                                                                            alt="" style="width: 95px;"></a>
                                                                     @php $counter++; @endphp
                                                                 @else
                                                                 @break
@@ -544,16 +540,16 @@
                                                 @if ($searchType == 'movie')
                                                     @foreach (array_merge($movieResults['images']['posters'], $movieResults['images']['backdrops']) as $photo)
                                                         <a class="img-lightbox" data-fancybox-group="gallery"
-                                                            href="{{ 'https://image.tmdb.org/t/p/w92' . $photo['file_path'] }}"><img
-                                                                src="{{ 'https://image.tmdb.org/t/p/w92' . $photo['file_path'] }}"
-                                                                alt=""></a>
+                                                            href="{{ 'https://image.tmdb.org/t/p/original' . $photo['file_path'] }}"><img
+                                                                src="{{ 'https://image.tmdb.org/t/p/original' . $photo['file_path'] }}"
+                                                                alt="" style="width: 107px;"></a>
                                                     @endforeach
                                                 @elseif ($searchType == 'series')
                                                     @foreach (array_merge($seriesResults['images']['posters'], $seriesResults['images']['backdrops']) as $photo)
                                                         <a class="img-lightbox" data-fancybox-group="gallery"
-                                                            href="{{ 'https://image.tmdb.org/t/p/w92' . $photo['file_path'] }}"><img
-                                                                src="{{ 'https://image.tmdb.org/t/p/w92' . $photo['file_path'] }}"
-                                                                alt=""></a>
+                                                            href="{{ 'https://image.tmdb.org/t/p/original' . $photo['file_path'] }}"><img
+                                                                src="{{ 'https://image.tmdb.org/t/p/original' . $photo['file_path'] }}"
+                                                                alt="" style="width: 107px;"></a>
                                                     @endforeach
                                                 @endif
                                             </div>
@@ -569,6 +565,24 @@
     </div>
 </div>
 </form>
+
+
+<div class="modal" tabindex="-1" id="loginModal">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Message</h5>
+        </div>
+        <div class="modal-body">
+            <p>Please Login First</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" onclick="closeModal()" class="btn btn-secondary"
+                data-bs-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+</div>
 @endsection
 
 @section('customJs')
@@ -579,8 +593,9 @@
                 $('#watchDateSection').show();
                 $('#reviewSection').hide();
             } else if (this.value === '1') {
-                $('#watchDateSection').show();
+                $('#watchDateSection').hide();
                 $('#reviewSection').show();
+                $('#watchdate').show();
             }
         });
     });
@@ -612,5 +627,23 @@
             }
         });
     });
+
+    function checkLogin() {
+        if (!{{ auth()->check() ? 'true' : 'false' }}) {
+            openModal();
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+
+    function openModal() {
+        var modal = document.getElementById('loginModal');
+        modal.style.display = 'block';
+    }
+
+    function closeModal() {
+        var modal = document.getElementById('loginModal');
+        modal.style.display = 'none';
+    }
 </script>
 @endsection

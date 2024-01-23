@@ -4725,7 +4725,7 @@ ul {
   margin-left: 5px;
 }
 .tabs {
-  margin-bottom: 60px;
+  margin-top: 120px;
   overflow: hidden;
 }
 .tabs ul.tab-links,
@@ -6000,7 +6000,7 @@ ul {
   justify-content: flex-start;
   border-top: 1px solid #405266;
   border-bottom: 1px solid #405266;
-  margin-bottom: 70px;
+  margin-bottom: 15px;
 }
 @media (max-width: 767px) {
   .movie-single .movie-single-ct .movie-rate {
@@ -7139,7 +7139,8 @@ p.ceb-single {
 .sliderv2 {
   background: url('../images/uploads/slider-bg2.jpg') no-repeat;
   padding-bottom: 0;
-  padding-top: 180px;
+  padding-top: 202px;
+  padding-left: 70px;
   overflow: hidden;
 }
 .sliderv2 .movie-item .title-in {
@@ -7239,7 +7240,7 @@ p.ceb-single {
   }
 }
 .slider-single-item .slick-next {
-  right: -100px;
+  right: 17px;
 }
 @media (max-width: 991px) {
   .slider-single-item .slick-next {
