@@ -76,18 +76,12 @@
     }
 </style>
 @section('content')
-    <form action="" id="showReviewForm" method="post" name="showReviewForm" onsubmit="return checkLogin()">
+    <form action="" id="showReviewForm" method="post" name="showReviewForm">
         @csrf
         <div class="buster-light">
             <div class="hero mv-single-hero">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-12">
-                            <ul class="breadcumb">
-                                <li class="active"><a href="#">Home</a></li>
-                                <li> <span class="ion-ios-arrow-right"></span> movie listing</li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -180,7 +174,7 @@
                                         <i class="ion-ios-star-outline"></i>
                                     </div>
                                 </div>
-                                <div>
+                                <div class="check">
                                     <input type="hidden" name="movieResults" value="{{ json_encode($movieResults) }}">
                                     <input type="hidden" name="seriesResults" value="{{ json_encode($seriesResults) }}">
                                     <input type="hidden" name="searchType" value="{{ $searchType }}">
@@ -189,78 +183,94 @@
                                             <input class="form-check-input" type="radio" name="watch_status"
                                                 id="wantToWatch" value="0"
                                                 {{ old('watch_status', $userReview ? $userReview->watch_status : '') == '0' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="wantToWatch" style="color: white">
+                                            <label class="" for="wantToWatch" style="color: white">
                                                 Want to Watch
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="watch_status"
+                                            <input class="" type="radio" name="watch_status"
                                                 id="alreadyWatched" value="1"
                                                 {{ old('watch_status', $userReview ? $userReview->watch_status : '') == '1' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="alreadyWatched" style="color: white">
+                                            <label class="" for="alreadyWatched" style="color: white">
                                                 Already Watched
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                                 <div id="watchDateSection"
-                                    style="display: {{ $userReview && $userReview->watch_date ? 'block' : 'none' }}; margin-top: 27px;">
+                                    style="display: {{ $userReview && $userReview->watch_date ? 'block' : 'none' }}; margin-top: 17px;">
                                     <!-- Input fields related to "Want to Watch" section go here -->
-                                    <label for="watch_date" style="color: white">Watch Date:</label>
-                                    <input type="date" id="watchDate" name="watch_date"
-                                        value="{{ old('watch_date', $userReview ? $userReview->watch_date : '') }}">
-                                    <button type="submit">Submit</button>
+                                    <div class="watch" style="    display: flex; gap: 6px">
+                                        <label for="watch_date" style="color: white">Watch Date:</label>
+                                        <input type="date" id="watchDate" name="watch_date"
+                                            value="{{ old('watch_date', $userReview ? $userReview->watch_date : '') }}"
+                                            style="width: 15rem">
+                                        <input class="submit" type="submit" value="submit"
+                                            style="background-color: #dd003f;
+                                            color: #ffffff;
+                                            padding: 5px 19px;
+                                            -webkit-border-radius: 20px;
+                                            -moz-border-radius: 20px;
+                                            border-radius: 20px">
+                                    </div>
                                 </div>
                                 <div id="reviewSection"
                                     style="display: {{ old('watch_status', $userReview ? $userReview->watch_status : '') == '1' ? 'block' : 'none' }}; margin-top: 4px;">
                                     <!-- Input fields related to "Already Watched" section go here -->
-                                    <div class="rating">
-                                        <label>
-                                            <input type="radio" name="user_rating" value="1"
-                                                {{ $userReview && $userReview->user_rating == 1 ? 'checked' : '' }} />
-                                            <span class="icon">★</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="user_rating" value="2"
-                                                {{ $userReview && $userReview->user_rating == 2 ? 'checked' : '' }} />
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="user_rating" value="3"
-                                                {{ $userReview && $userReview->user_rating == 3 ? 'checked' : '' }} />
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="user_rating" value="4"
-                                                {{ $userReview && $userReview->user_rating == 4 ? 'checked' : '' }} />
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="user_rating" value="5"
-                                                {{ $userReview && $userReview->user_rating == 5 ? 'checked' : '' }} />
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                        </label>
+                                    <div class="review" style="display: flex; gap: 3rem">
+                                        <div class="rating">
+                                            <label>
+                                                <input type="radio" name="user_rating" value="1"
+                                                    {{ $userReview && $userReview->user_rating == 1 ? 'checked' : '' }} />
+                                                <span class="icon">★</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="user_rating" value="2"
+                                                    {{ $userReview && $userReview->user_rating == 2 ? 'checked' : '' }} />
+                                                <span class="icon">★</span>
+                                                <span class="icon">★</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="user_rating" value="3"
+                                                    {{ $userReview && $userReview->user_rating == 3 ? 'checked' : '' }} />
+                                                <span class="icon">★</span>
+                                                <span class="icon">★</span>
+                                                <span class="icon">★</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="user_rating" value="4"
+                                                    {{ $userReview && $userReview->user_rating == 4 ? 'checked' : '' }} />
+                                                <span class="icon">★</span>
+                                                <span class="icon">★</span>
+                                                <span class="icon">★</span>
+                                                <span class="icon">★</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="user_rating" value="5"
+                                                    {{ $userReview && $userReview->user_rating == 5 ? 'checked' : '' }} />
+                                                <span class="icon">★</span>
+                                                <span class="icon">★</span>
+                                                <span class="icon">★</span>
+                                                <span class="icon">★</span>
+                                                <span class="icon">★</span>
+                                            </label>
+                                        </div>
+                                        <div id="alreadyDate"
+                                            style="display: {{ $userReview && $userReview->watch_date ? 'block' : 'none' }}; margin-top: 3px;">
+                                            <!-- Input fields related to "Want to Watch" section go here -->
+                                            <label for="watch_date" style="color: white">Watch Date:</label>
+                                            <input type="date" id="watchDate" name="watch_date"
+                                                value="{{ old('watch_date', $userReview ? $userReview->watch_date : '') }}">
+                                        </div>
                                     </div>
-                                    <div id="watchdate"
-                                        style="display: {{ $userReview && $userReview->watch_date ? 'block' : 'none' }}; margin-top: 27px;">
-                                        <!-- Input fields related to "Want to Watch" section go here -->
-                                        <label for="watch_date" style="color: white">Watch Date:</label>
-                                        <input type="date" id="watchDate" name="watch_date"
-                                            value="{{ old('watch_date', $userReview ? $userReview->watch_date : '') }}">
-                                    </div>
-                                    <label for="comment" style="color: white">Comment:</label>
-                                    <textarea id="comment" name="comment">{{ old('comment', $userReview ? $userReview->comment : '') }}</textarea>
-                                    <button type="submit">Submit Review</button>
+                                        <label for="comment" style="color: white">Comment:</label>
+                                        <textarea id="comment" name="comment" style="width: 388px; height: 98px">{{ old('comment', $userReview ? $userReview->comment : '') }}</textarea>
+                                    <button type="submit" style="background-color: #dd003f;
+                                    color: #ffffff;
+                                    padding: 5px 19px;
+                                    -webkit-border-radius: 20px;
+                                    -moz-border-radius: 20px;
+                                    border-radius: 20px; margin: 4px">Submit Review</button>
                                 </div>
                                 <div class="movie-tabs">
                                     <div class="tabs">
@@ -567,22 +577,6 @@
 </form>
 
 
-<div class="modal" tabindex="-1" id="loginModal">
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Message</h5>
-        </div>
-        <div class="modal-body">
-            <p>Please Login First</p>
-        </div>
-        <div class="modal-footer">
-            <button type="button" onclick="closeModal()" class="btn btn-secondary"
-                data-bs-dismiss="modal">Close</button>
-        </div>
-    </div>
-</div>
-</div>
 @endsection
 
 @section('customJs')
@@ -592,12 +586,14 @@
             if (this.value === '0') {
                 $('#watchDateSection').show();
                 $('#reviewSection').hide();
+                $('#alreadyDate').hide();
             } else if (this.value === '1') {
-                $('#watchDateSection').hide();
                 $('#reviewSection').show();
-                $('#watchdate').show();
+                $('#watchDateSection').hide();
+                $('#alreadyDate').show();
             }
         });
+        $('input[name="watch_status"]:checked').trigger('change');
     });
 
     $(':radio').change(function() {
@@ -608,6 +604,13 @@
         event.preventDefault();
         formArray = $(this).serializeArray();
         var movieId = @json($movieResults['id'] ?? ($seriesResults['id'] ?? null));
+
+        if (!{{ auth()->check() ? 'true' : 'false' }}) {
+            $(".loginLink").click()
+
+            {{ Session(['url.intended' => url()->current()]) }}
+            return false;
+        }
         $("button[type='submit']").prop('disabled', true);
         $.ajax({
             url: '{{ route('show.review', '') }}/' + movieId,
@@ -617,6 +620,7 @@
             success: function(response) {
                 $("button[type='submit']").prop('disabled', false);
                 if (response['status'] == true) {
+
                     window.location.href = "{{ route('movies.home') }}";
                 } else {
                     console.log("error");
@@ -627,23 +631,5 @@
             }
         });
     });
-
-    function checkLogin() {
-        if (!{{ auth()->check() ? 'true' : 'false' }}) {
-            openModal();
-            return false; // Prevent form submission
-        }
-        return true; // Allow form submission
-    }
-
-    function openModal() {
-        var modal = document.getElementById('loginModal');
-        modal.style.display = 'block';
-    }
-
-    function closeModal() {
-        var modal = document.getElementById('loginModal');
-        modal.style.display = 'none';
-    }
 </script>
 @endsection

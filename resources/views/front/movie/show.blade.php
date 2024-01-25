@@ -8,7 +8,7 @@
                         <div class="hero-ct">
                             <h1> movie listing - list</h1>
                             <ul class="breadcumb">
-                                <li class="active"><a href="{{route('movies.home')}}">Home</a></li>
+                                <li class="active"><a href="{{ route('movies.home') }}">Home</a></li>
                                 <li> <span class="ion-ios-arrow-right"></span> movie listing</li>
                             </ul>
                         </div>
@@ -19,8 +19,8 @@
 
         <div class="container">
             <div class="row ipad-width2">
-                <div class="col-md-8 col-sm-12 col-xs-12">
-                    <div class="searh-form">
+                <div class="col-md-8 col-sm-12 col-xs-12" style="margin-top: 25px">
+                    {{-- <div class="searh-form">
                         <form class="form-style-1" action="{{ route('movies.show') }}" method="get" id="searchForm">
                             <h4 class="sb-title">Search for Show</h4>
                             <div class="form-check">
@@ -45,11 +45,18 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
+                    </div> --}}
                     @if ($searchType == 'movie')
                         @foreach ($movieResults['results'] as $movie)
                             <div class="movie-item-style-2">
-                                <img src="{{ 'https://image.tmdb.org/t/p/w92' . $movie['poster_path'] }}" alt="">
+                                @if (!empty($movie['poster_path']))
+                                    <img src="{{ 'https://image.tmdb.org/t/p/w92' . $movie['poster_path'] }}"
+                                        alt="">
+                                @else
+                                    <!-- Use a default image if the poster path is empty -->
+                                    <img src="{{asset('images/default-image/download.jpg')}}"
+                                        alt="Default Image" style="width: 12%;">
+                                @endif
                                 <div class="mv-item-infor">
                                     <h6><a href="{{ route('show.detail', ['type' => 'movie', 'id' => $movie['id']]) }}">{{ $movie['title'] }}
                                             <span>({{ \Carbon\Carbon::parse($movie['release_date'])->format('Y') }})</span></a>
@@ -67,7 +74,13 @@
                     @elseif ($searchType == 'series')
                         @foreach ($seriesResults['results'] as $series)
                             <div class="movie-item-style-2">
-                                <img src="{{ 'https://image.tmdb.org/t/p/w92' . $series['poster_path'] }}" alt="">
+                                @if (!empty($series['poster_path']))
+                                    <img src="{{ 'https://image.tmdb.org/t/p/w92' . $series['poster_path'] }}"
+                                        alt="">
+                                @else
+                                    <img src="{{asset('images/default-image/download.jpg')}}"
+                                        alt="Default Image" style="width: 12%;">
+                                @endif
                                 <div class="mv-item-infor">
                                     <h6><a href="{{ route('show.detail', ['type' => 'series', 'id' => $series['id']]) }}">{{ $series['name'] }}
                                             <span>({{ \Carbon\Carbon::parse($series['first_air_date'])->format('Y') }})</span></a>
@@ -75,7 +88,8 @@
                                     <p class="rate"><i
                                             class="ion-android-star"></i><span>{{ number_format($series['vote_average'], 1) }}</span>
                                         /10</p>
-                                    <p class="describe">{{ \Illuminate\Support\Str::limit($series['overview'], 250, '...') }}</p>
+                                    <p class="describe">
+                                        {{ \Illuminate\Support\Str::limit($series['overview'], 250, '...') }}</p>
                                     <p class="run-time"> Run Time: N/A <span>Release:
                                             {{ \Carbon\Carbon::parse($series['first_air_date'])->format('j F Y') }}</span>
                                     </p>

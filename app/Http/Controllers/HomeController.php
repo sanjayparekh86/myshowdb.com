@@ -77,6 +77,11 @@ class HomeController extends Controller
 
         if ($validator->passes()) {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+
+                if (session()->has('url.intended')) {
+                    return redirect(session()->get('url.intended'));
+                }
+
                 return response()->json(['success' => true, 'redirect' => route('movies.home')]);
             } else {
                 return response()->json(['success' => false, 'error' => 'Either email/password is incorrect']);

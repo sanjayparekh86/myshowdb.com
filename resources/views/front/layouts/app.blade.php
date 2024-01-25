@@ -221,7 +221,7 @@
                         <option value="movie">Movies</option>
                     </select>
                     <input type="text" name="search"
-                        placeholder="Search for a movie, TV Show or celebrity that you are looking for">
+                        placeholder="Search Movie or Tv show">
                 </div>
             </form>
         </div>
@@ -236,9 +236,6 @@
                 <div class="flex-child-ft item1">
                     <a href="{{ route('movies.home') }}"><img class="logo"
                             src="{{ asset('images/logo/logo.png') }}" alt="" width="90"></a>
-                    <p>5th Avenue st, manhattan<br>
-                        New York, NY 10001</p>
-                    <p>Call us: <a href="#">(+01) 202 342 6789</a></p>
                 </div>
                 <div class="flex-child-ft item2">
                     <h4>Resources</h4>
@@ -261,10 +258,10 @@
                     <div class="flex-child-ft item4">
                         <h4>Account</h4>
                         <ul>
-                            <li><a href="#">My Account</a></li>
-                            <li><a href="#">Watchlist</a></li>
+                            <li><a href="{{route('user.profile')}}">My Account</a></li>
+                            {{-- <li><a href="#">Watchlist</a></li>
                             <li><a href="#">Collections</a></li>
-                            <li><a href="#">User Guide</a></li>
+                            <li><a href="#">User Guide</a></li> --}}
                         </ul>
                     </div>
                 @endif

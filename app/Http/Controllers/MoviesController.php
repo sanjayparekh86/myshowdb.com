@@ -125,7 +125,6 @@ class MoviesController extends Controller
         $movieResults = [];  // Initialize as an empty array
         $seriesResults = []; // Initialize as an empty array
 
-
         $showDetails = ShowList::where('id', $id)->first();
         if ($showDetails) {
 
@@ -165,6 +164,12 @@ class MoviesController extends Controller
         // dump($seriesResults);
         // dump($movieResults);
 
+        if (Auth::check() == false) {
+            if (!session()->has('url.intended')) {
+                session(['url.intended' => url()->current()]);
+            }
+        }
+
         return view('front.movie.show-detail', [
             'movieResults' => $movieResults,
             'seriesResults' => $seriesResults,
@@ -188,6 +193,8 @@ class MoviesController extends Controller
             $seriesResults = json_decode($request->input('seriesResults'), true);
         }
         // dump($movieResults);
+
+
 
         $title = $searchType == 1 ? $movieResults['title'] : $seriesResults['name'];
         $releaseDate = $searchType == 1 ? $movieResults['release_date'] : $seriesResults['first_air_date'];

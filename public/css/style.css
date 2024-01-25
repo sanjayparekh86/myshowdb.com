@@ -4032,6 +4032,18 @@ ul {
   text-transform: none;
   margin-bottom: 25px;
 }
+
+@media (max-width: 767px) {
+    .bd-hd{
+        color: black;
+    }
+}
+@media (max-width: 991px) {
+    .bd-hd{
+        color: black;
+    }
+}
+
 .bd-hd span {
   font-family: 'Dosis', sans-serif;
   font-size: 24px;
@@ -4725,7 +4737,7 @@ ul {
   margin-left: 5px;
 }
 .tabs {
-  margin-top: 120px;
+  margin-top: 67px;
   overflow: hidden;
 }
 .tabs ul.tab-links,
@@ -5658,28 +5670,28 @@ ul {
 }
 /*movie single hero*/
 .mv-single-hero {
-  background: url('../images/uploads/hero-bg.jpg') no-repeat;
+  background: url('../images/uploads/hero-bg.jpg') repeat;
   height: 598px;
 }
 /*series single hero*/
 .sr-single-hero {
-  background: url('../images/uploads/sr-single.jpg') no-repeat;
+  background: url('../images/uploads/sr-single.jpg') repeat;
   height: 598px;
 }
 .hero3 {
-  background: url('../images/uploads/celeb-hero-single.jpg') no-repeat;
+  background: url('../images/uploads/celeb-hero-single.jpg') repeat;
   height: 538px;
 }
 .common-hero {
   height: 385px;
-  background: url('../images/uploads/user-hero-bg.jpg') no-repeat;
+  background: url('../images/uploads/user-hero-bg.jpg') repeat;
 }
 .common-hero:before {
   background-color: rgba(0, 0, 0, 0.4);
 }
 .user-hero {
   height: 385px;
-  background: url('../images/uploads/user-hero-bg.jpg') no-repeat;
+  background: url('../images/uploads/user-hero-bg.jpg') repeat;
 }
 .user-hero .hero-ct {
   padding-top: 225px;
@@ -6002,12 +6014,16 @@ ul {
   border-bottom: 1px solid #405266;
   margin-bottom: 15px;
 }
+
+
+
 @media (max-width: 767px) {
   .movie-single .movie-single-ct .movie-rate {
     display: flex;
     flex-direction: column;
     padding: 15px 0;
   }
+
 }
 .movie-single .movie-single-ct .movie-rate .rate {
   display: -webkit-flex;
@@ -6052,6 +6068,15 @@ ul {
     padding-left: 0;
     border: none;
   }
+  .movie-single .movie-single-ct .movie-rate .rate p span {
+    color: #000000;
+  }
+}
+
+@media (max-width: 991px) {
+    .movie-single .movie-single-ct .movie-rate .rate p span {
+        color: #000000;
+      }
 }
 .movie-single .movie-single-ct .movie-rate .rate-star p {
   font-size: 18px;
@@ -6059,6 +6084,8 @@ ul {
   margin-right: 15px;
   margin-bottom: 0;
 }
+
+
 @media (max-width: 767px) {
   .movie-single .movie-single-ct .movie-rate .rate-star p {
     font-size: 16px;
@@ -7137,7 +7164,7 @@ p.ceb-single {
   text-align: right;
 }
 .sliderv2 {
-  background: url('../images/uploads/slider-bg2.jpg') no-repeat;
+  background: url('../images/uploads/slider-bg2.jpg') repeat;
   padding-bottom: 0;
   padding-top: 202px;
   padding-left: 70px;
@@ -7235,8 +7262,8 @@ p.ceb-single {
     padding-top: 0;
   }
   .sliderv2 .slider-single-item .movie-item .title-in {
-    margin-left: 10px;
-    margin-bottom: 15px;
+    margin-left: 2px;
+    margin-top: 76px
   }
 }
 .slider-single-item .slick-next {
@@ -7850,6 +7877,7 @@ header .navbar-default .navbar-nav {
   align-items: center;
   justify-content: flex-start;
   list-style: none;
+  gap: 6px;
 }
 header .navbar-default .navbar-nav li a {
   font-family: 'Dosis', sans-serif;
@@ -8130,18 +8158,22 @@ header#headerv3-light {
     margin-left: 0 !important;
   }
   header img.logo {
-    width: 18%;
+    width: 7%;
   }
 }
 @media (max-width: 767px) {
   .top-search {
-    display: none !important;
+    display: inline-block;
+    width: 104%;
+    height: 101%;
+    margin-top: 16px;
+    margin-left: -16px;
   }
   header .navbar-default {
     padding: 10px 0;
   }
   header .navbar-default img.logo {
-    width: 30%;
+    width: 7%;
     margin-top: 5px;
   }
 }
@@ -8291,3 +8323,9 @@ footer.full-width-ft .ft-copyright {
   font-family: 'Dosis', sans-serif;
   font-weight: 700;
 }
+
+@media (max-width: 767px) {
+    .movie-single .movie-single-ct .check .check-box .form-check .checkName{
+       color: #000000;
+    }
+  }

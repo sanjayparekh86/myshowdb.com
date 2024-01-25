@@ -44,7 +44,6 @@
                                 <th>Last Name</th>
                                 <th>Nick Name</th>
                                 <th>Email</th>
-                                <th>Phone</th>
                                 <th>Register From</th>
                                 <th width="100">Actions</th>
                             </tr>
@@ -58,7 +57,6 @@
                                         <td>{{ $users->last_name }}</td>
                                         <td>{{ $users->nick_name }}</td>
                                         <td>{{ $users->email }}</td>
-                                        <td>123456789</td>
                                         <td>{{ $users->register_from }}</td>
                                         <td>
                                             <a href="{{ route('user.edit', $users->id) }}">
