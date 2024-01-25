@@ -7,7 +7,11 @@
                     <div class="hero-ct">
                         <h1>Inquiry Section</h1>
                         <ul class="breadcumb">
-                            <li class="active"><a href="{{ route('movies.home') }}">Home</a></li>
+                            @if (auth()->check())
+                                <li class="active"><a href="{{ route('movies.home') }}">Home</a></li>
+                            @else
+                                <li class="active"><a href="{{ route('front.index') }}">Home</a></li>
+                            @endif
                             <li> <span class="ion-ios-arrow-right"></span>Profile</li>
                         </ul>
                     </div>
@@ -18,7 +22,7 @@
     <div class="buster-light">
         <div class="page-single">
             <div class="container">
-                <div class="row ipad-width">
+                <div class="row ipad-width" style="display: flex; justify-content: center">
                     <div class="col-md-9 col-sm-12 col-xs-12">
                         <div class="form-style-1 user-pro" action="#">
                             <form action="#" class="user" id="inquiryForm">
@@ -26,35 +30,35 @@
                                 <h1 style="display: flex; justify-content: center;">Inquiry Form</h1>
                                 <div class="row">
                                     <div class="col-md-6 form-it">
-                                        <label>Name</label>
+                                        <label for="name">Name</label>
                                         <input type="text" name="name" id="name" placeholder="Name"
                                             style="width: 163%;"
                                             @if (Auth::check()) value="{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" readonly @endif>
-                                        <p class="error"></p>
+                                        <p class="error" style="color: red"></p>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 form-it">
-                                        <label>Email</label>
+                                        <label for="email">Email</label>
                                         <input type="text" name="email" id="email" placeholder="Email"
                                             style="width: 163%;"
                                             @if (Auth::check()) value="{{ Auth::user()->email }}" readonly @endif>
-                                        <p class="error"></p>
+                                        <p class="error" style="color: red"></p>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 form-it">
-                                        <label>Phone</label>
+                                        <label for="phone">Phone</label>
                                         <input type="number" name="phone" id="phone" placeholder="Phone"
                                             style="width: 163%;">
-                                        <p class="error"></p>
+                                        <p class="error" style="color: red"></p>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 form-it" style="width: 79%;">
-                                        <label>Message</label>
+                                        <label for="message">Message</label>
                                         <textarea class="form-control" rows="3" id="message" name="message" placeholder="Enter Your Message"></textarea>
-                                        <p class="error"></p>
+                                        <p class="error" style="color: red"></p>
                                     </div>
                                 </div>
                                 <div class="row">

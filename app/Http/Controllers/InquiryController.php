@@ -3,21 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inquiry;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\InquirySubmitted;
+use App\Mail\ThankyuMail;
 
 class InquiryController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('front.inquiry.inquiry');
     }
 
-    public function inquirySubmit(Request $request){
+    public function inquirySubmit(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
             'phone' => 'required',
             'message' => 'required'
         ]);
@@ -30,13 +34,18 @@ class InquiryController extends Controller
             $inquiry->message = $request->message;
             $inquiry->save();
 
-            Mail::to('ishantthakkar10@gmail.com')->send(new InquirySubmitted($inquiry));
+
+            $recipientEmail = Setting::first()->email;
+            Mail::to($recipientEmail)->send(new InquirySubmitted($inquiry));
+
+            // Send the thank-you email to the user
+            Mail::to($request->email)->send(new ThankyuMail($inquiry));
 
             return response()->json([
                 'status' => true,
                 'message' => 'Inquiry Received'
             ]);
-        }else{
+        } else {
             return response()->json([
                 'status' => false,
                 'errors' => $validator->errors()

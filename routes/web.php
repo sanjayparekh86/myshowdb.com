@@ -5,6 +5,8 @@ use App\Http\Controllers\admin\AuthController;
 use App\Http\Controllers\admin\BannerController;
 use App\Http\Controllers\admin\InquiriesController;
 use App\Http\Controllers\admin\PagesController;
+use App\Http\Controllers\admin\SettingController;
+use App\Http\Controllers\BlogsController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\HomeController;
@@ -54,8 +56,8 @@ Route::get('auth/google/callback', [HomeController::class, 'googlecallback']);
 Route::get('auth/facebook', [HomeController::class, 'facebookpage']);
 Route::get('auth/facebook/callback', [HomeController::class, 'facebookcallback']);
 
-// Register route
-
+// News Route
+Route::get('/blogs', [BlogsController::class, 'index'])->name('blogs.index');
 
 // Change password route
 
@@ -114,8 +116,12 @@ Route::group(['prefix' => 'admin'], function () {
         Route::match(['post', 'put'], '/page/{page?}', [PagesController::class, 'createorUpdate'])->name('page.createorUpdate');
         Route::delete('/page/{page}', [PagesController::class, 'destroy'])->name('page.delete');
 
-         //slug
-         Route::get('/getSlug', function (Request $request) {
+        // Setting Routes
+        Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
+        Route::match(['post', 'put'], '/setting/{setting?}', [SettingController::class, 'createorUpdate'])->name('setting.createorUpdate');
+
+        //slug
+        Route::get('/getSlug', function (Request $request) {
             $slug = '';
             if (!empty($request->title)) {
                 $slug = Str::slug($request->title);

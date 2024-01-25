@@ -20,7 +20,7 @@
 </head>
 <body>
 
-<h2>New Inquiry Submitted</h2>
+<h2>New Inquiry</h2>
 
 <table>
     <tr>

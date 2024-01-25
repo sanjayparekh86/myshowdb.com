@@ -33,7 +33,7 @@ class InquirySubmitted extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Inquiry Submitted',
+            subject: 'Inquiry',
         );
     }
 

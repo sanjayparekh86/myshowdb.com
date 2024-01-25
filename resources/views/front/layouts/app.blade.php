@@ -194,8 +194,7 @@
                             </a>
                         </li>
                         <li class="dropdown first">
-                            <a href="#" class="btn btn-default" data-toggle="dropdown"
-                                data-hover="dropdown">Blog
+                            <a href="{{route('blogs.index')}}" class="btn btn-default">Blog
                             </a>
                         </li>
                     </ul>
@@ -242,7 +241,7 @@
                     <ul>
                         <li><a href="{{route('front.about')}}">About</a></li>
                         <li><a href="{{ route('inquiry.index') }}">Contact Us</a></li>
-                        <li><a href="#">Blog</a></li>
+                        <li><a href="{{route('blogs.index')}}">Blog</a></li>
                         <li><a href="#">User Guide</a></li>
                     </ul>
                 </div>
