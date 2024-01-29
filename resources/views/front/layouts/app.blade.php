@@ -183,18 +183,12 @@
                             <a href="#page-top"></a>
                         </li>
                         <li class="dropdown first">
-                            <a href="{{ route('front.index') }}" class="btn btn-default dropdown-toggle lv1"
-                                data-toggle="dropdown">
+                            <a href="{{ route('front.index') }}" class="btn btn-default">
                                 Home
                             </a>
                         </li>
                         <li class="dropdown first">
-                            <a href="" class="btn btn-default dropdown-toggle lv1">
-                                movies
-                            </a>
-                        </li>
-                        <li class="dropdown first">
-                            <a href="{{route('blogs.index')}}" class="btn btn-default">Blog
+                            <a href="https://www.myshowdb.com/blog/" class="btn btn-default">Blog
                             </a>
                         </li>
                     </ul>
@@ -216,11 +210,11 @@
             <form action="{{ route('movies.show') }}" method="get" id="searchForm">
                 <div class="top-search">
                     <select name="show_type">
-                        <option value="series">TV show</option>
-                        <option value="movie">Movies</option>
+                        <option value="series" {{ old('show_type') == 'series' ? 'selected' : '' }}>TV show</option>
+                        <option value="movie" {{ old('show_type') == 'movie' ? 'selected' : '' }}>Movies</option>
                     </select>
-                    <input type="text" name="search"
-                        placeholder="Search Movie or Tv show">
+                    <input type="text" name="search" placeholder="Search Movie or Tv show"
+                        value="{{ old('search') }}">
                 </div>
             </form>
         </div>
@@ -239,9 +233,9 @@
                 <div class="flex-child-ft item2">
                     <h4>Resources</h4>
                     <ul>
-                        <li><a href="{{route('front.about')}}">About</a></li>
+                        <li><a href="{{ route('front.about') }}">About</a></li>
                         <li><a href="{{ route('inquiry.index') }}">Contact Us</a></li>
-                        <li><a href="{{route('blogs.index')}}">Blog</a></li>
+                        <li><a href="https://www.myshowdb.com/blog/">Blog</a></li>
                         <li><a href="#">User Guide</a></li>
                     </ul>
                 </div>
@@ -257,7 +251,7 @@
                     <div class="flex-child-ft item4">
                         <h4>Account</h4>
                         <ul>
-                            <li><a href="{{route('user.profile')}}">My Account</a></li>
+                            <li><a href="{{ route('user.profile') }}">My Account</a></li>
                             {{-- <li><a href="#">Watchlist</a></li>
                             <li><a href="#">Collections</a></li>
                             <li><a href="#">User Guide</a></li> --}}

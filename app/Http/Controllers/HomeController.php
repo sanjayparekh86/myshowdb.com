@@ -22,12 +22,35 @@ class HomeController extends Controller
         $banner = Banners::orderBy('id', 'DESC')->get();
         $movieResults = Http::withToken(config('services.movie_api.token'))->get('https://api.themoviedb.org/3/movie/top_rated')->json();
         $seriesResults = Http::withToken(config('services.movie_api.token'))->get('https://api.themoviedb.org/3/tv/top_rated')->json();
+        $upcoming = Http::withToken(config('services.movie_api.token'))->get('https://api.themoviedb.org/3/movie/upcoming')->json();
+        $nowPlaying = Http::withToken(config('services.movie_api.token'))->get('https://api.themoviedb.org/3/movie/now_playing')->json();
+        $movieProvider = Http::withToken(config('services.movie_api.token'))->get('https://api.themoviedb.org/3/watch/providers/movie')->json();
+        $tvProvider = Http::withToken(config('services.movie_api.token'))->get('https://api.themoviedb.org/3/watch/providers/tv')->json();
 
+        $combinedProviders = array_merge($movieProvider['results'], $tvProvider['results']);
+        $final = [];
+        $recordLimit = 20;
+        $counter = 0;
+        foreach ($combinedProviders as $k => $v) {
+            $final[$v['provider_name']] = $v;
+            $counter++;
+
+            if ($counter >= $recordLimit) {
+                break;
+            }
+        }
+        usort($final, function ($a, $b) {
+            return $a['display_priority'] <=> $b['display_priority'];
+        });
 
         $data['banner'] = $banner;
+        $data['upcoming'] = $upcoming;
+        $data['nowPlaying'] = $nowPlaying;
         $data['movieResults'] = $movieResults;
         $data['seriesResults'] = $seriesResults;
-        // dump($seriesResults);
+        $data['combinedProviders'] = $combinedProviders;
+        $data['final'] = $final;
+        // dump($final);
         return view('front.index', $data);
     }
 
@@ -260,18 +283,22 @@ class HomeController extends Controller
         }
     }
 
-    public function term_condition(){
+    public function term_condition()
+    {
         return view('front.static-pages.term_condition');
     }
-    public function private_policy(){
+    public function private_policy()
+    {
         return view('front.static-pages.private_policy');
     }
 
-    public function about(){
+    public function about()
+    {
         return view('front.static-pages.about');
     }
 
-    public function page($slug){
+    public function page($slug)
+    {
         $page = Page::where('slug', $slug)->first();
         // dd($page);
         return view('front.static-pages.page', [

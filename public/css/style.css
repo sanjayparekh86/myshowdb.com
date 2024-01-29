@@ -4118,6 +4118,11 @@ ul {
   -o-transition: all 0.5s ease-out;
   transition: all 0.5s ease-out;
 }
+.movie-items .movie-item .logo {
+    width: 250px;
+    height: 150px;
+    text-align: center;
+}
 .movie-items .movie-item .title-in {
   display: flex;
   flex-direction: column;

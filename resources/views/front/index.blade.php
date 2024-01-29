@@ -88,7 +88,9 @@
                                                     Read more <i class="ion-android-arrow-dropright"></i> </a>
                                             </div>
                                             <div class="title-in">
-                                                <h6><a href="#">{{ $movie['title'] }}</a></h6>
+                                                <h6><a
+                                                        href="{{ route('show.detail', ['type' => 'movie', 'id' => $movie['id']]) }}">{{ $movie['title'] }}</a>
+                                                </h6>
                                                 <p><i
                                                         class="ion-android-star"></i><span>{{ number_format($movie['vote_average'], 1) }}</span>
                                                     /10</p>
@@ -120,10 +122,108 @@
                                                     Read more <i class="ion-android-arrow-dropright"></i> </a>
                                             </div>
                                             <div class="title-in">
-                                                <h6><a href="#">{{ $series['name'] }}</a></h6>
+                                                <h6><a
+                                                        href="{{ route('show.detail', ['type' => 'series', 'id' => $series['id']]) }}">{{ $series['name'] }}</a>
+                                                </h6>
                                                 <p><i
                                                         class="ion-android-star"></i><span>{{ number_format($series['vote_average'], 1) }}</span>
                                                     /10</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="title-hd">
+                    <h2>Upcoming</h2>
+                </div>
+                <div class="tab-content">
+                    <div id="tab21-h2" class="tab active">
+                        <div class="row">
+                            <div class="slick-multiItem2">
+                                @foreach ($upcoming['results'] as $coming)
+                                    <div class="slide-it">
+                                        <div class="movie-item">
+                                            <div class="mv-img">
+                                                <img src="{{ 'https://image.tmdb.org/t/p/original' . $coming['poster_path'] }}"
+                                                    alt="">
+                                            </div>
+                                            <div class="hvr-inner">
+                                                <a
+                                                    href="{{ route('show.detail', ['type' => 'movie', 'id' => $coming['id']]) }}">
+                                                    Read more <i class="ion-android-arrow-dropright"></i> </a>
+                                            </div>
+                                            <div class="title-in">
+                                                <h6><a
+                                                        href="{{ route('show.detail', ['type' => 'movie', 'id' => $coming['id']]) }}">{{ $coming['title'] }}</a>
+                                                </h6>
+                                                <p><i
+                                                        class="ion-android-star"></i><span>{{ number_format($series['vote_average'], 1) }}</span>
+                                                    /10</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title-hd">
+                    <h2>Now Playing</h2>
+                </div>
+                <div class="tab-content">
+                    <div id="tab21-h2" class="tab active">
+                        <div class="row">
+                            <div class="slick-multiItem2">
+                                @foreach ($nowPlaying['results'] as $playing)
+                                    <div class="slide-it">
+                                        <div class="movie-item">
+                                            <div class="mv-img">
+                                                <img src="{{ 'https://image.tmdb.org/t/p/original' . $playing['poster_path'] }}"
+                                                    alt="">
+                                            </div>
+                                            <div class="hvr-inner">
+                                                <a
+                                                    href="{{ route('show.detail', ['type' => 'movie', 'id' => $playing['id']]) }}">
+                                                    Read more <i class="ion-android-arrow-dropright"></i> </a>
+                                            </div>
+                                            <div class="title-in">
+                                                <h6><a
+                                                        href="{{ route('show.detail', ['type' => 'movie', 'id' => $playing['id']]) }}">{{ $playing['title'] }}</a>
+                                                </h6>
+                                                <p><i
+                                                        class="ion-android-star"></i><span>{{ number_format($playing['vote_average'], 1) }}</span>
+                                                    /10</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="title-hd">
+                    <h2>Top Movies & Series Provider</h2>
+                </div>
+                <div class="tab-content">
+                    <div id="tab21-h2" class="tab active">
+                        <div class="row">
+                            <div class="slick-multiItem2">
+                                @foreach ($final as $finals)
+                                    <div class="slide-it">
+                                        <div class="slide-it">
+                                            <div class="movie-item">
+                                                <div class="mv-img">
+                                                    <img src="{{ 'https://image.tmdb.org/t/p/original' . $finals['logo_path'] }}"
+                                                        alt="" class="logo">
+                                                </div>
+                                                <div class="title-in">
+                                                    <h6><a href="#">{{ $finals['provider_name'] }}</a></h6>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

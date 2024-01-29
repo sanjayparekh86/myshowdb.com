@@ -29,33 +29,30 @@
                                 @csrf
                                 <h1 style="display: flex; justify-content: center;">Inquiry Form</h1>
                                 <div class="row">
-                                    <div class="col-md-6 form-it">
+                                    <div class="col-md-12 form-it">
                                         <label for="name">Name</label>
                                         <input type="text" name="name" id="name" placeholder="Name"
-                                            style="width: 163%;"
                                             @if (Auth::check()) value="{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" readonly @endif>
                                         <p class="error" style="color: red"></p>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6 form-it">
+                                    <div class="col-md-12 form-it">
                                         <label for="email">Email</label>
                                         <input type="text" name="email" id="email" placeholder="Email"
-                                            style="width: 163%;"
                                             @if (Auth::check()) value="{{ Auth::user()->email }}" readonly @endif>
                                         <p class="error" style="color: red"></p>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6 form-it">
+                                    <div class="col-md-12 form-it">
                                         <label for="phone">Phone</label>
-                                        <input type="number" name="phone" id="phone" placeholder="Phone"
-                                            style="width: 163%;">
+                                        <input type="number" name="phone" id="phone" placeholder="Phone">
                                         <p class="error" style="color: red"></p>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6 form-it" style="width: 79%;">
+                                    <div class="col-md-12 form-it">
                                         <label for="message">Message</label>
                                         <textarea class="form-control" rows="3" id="message" name="message" placeholder="Enter Your Message"></textarea>
                                         <p class="error" style="color: red"></p>
