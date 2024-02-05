@@ -50,7 +50,7 @@ class HomeController extends Controller
         $data['seriesResults'] = $seriesResults;
         $data['combinedProviders'] = $combinedProviders;
         $data['final'] = $final;
-        // dump($final);
+        // dump($upcoming);
         return view('front.index', $data);
     }
 

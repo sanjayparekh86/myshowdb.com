@@ -8,6 +8,36 @@
         font-size: 50px;
     }
 
+    @media only screen and (max-width: 576px) {
+        .rating {
+            font-size: 30px;
+            height: 30px;
+            line-height: 30px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .rating {
+            display: flex;
+            background: black;
+        }
+    }
+
+    @media (max-width: 900px) {
+        .rating {
+            display: flex;
+            background: black;
+        }
+    }
+
+    @media (max-width: 1200px) {
+        .rating {
+            /* display: flex; */
+            background: black;
+            flex: none;
+        }
+    }
+
     .rating label {
         position: absolute;
         top: 0;
@@ -73,6 +103,16 @@
     .rating label input:focus:not(:checked)~.icon:last-child {
         color: #000;
         text-shadow: 0 0 5px #09f;
+    }
+
+    .watch{
+        color: white
+    }
+
+    @media(max-width: 768px){
+        .watch {
+            color: black;
+        }
     }
 </style>
 @section('content')
@@ -183,15 +223,15 @@
                                             <input class="form-check-input" type="radio" name="watch_status"
                                                 id="wantToWatch" value="0"
                                                 {{ old('watch_status', $userReview ? $userReview->watch_status : '') == '0' ? 'checked' : '' }}>
-                                            <label class="" for="wantToWatch" style="color: white">
+                                            <label class="watch" for="wantToWatch" style="">
                                                 Want to Watch
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="" type="radio" name="watch_status"
-                                                id="alreadyWatched" value="1"
+                                            <input class="" type="radio" name="watch_status" id="alreadyWatched"
+                                                value="1"
                                                 {{ old('watch_status', $userReview ? $userReview->watch_status : '') == '1' ? 'checked' : '' }}>
-                                            <label class="" for="alreadyWatched" style="color: white">
+                                            <label class="watch" for="alreadyWatched" style="">
                                                 Already Watched
                                             </label>
                                         </div>
@@ -200,8 +240,8 @@
                                 <div id="watchDateSection"
                                     style="display: {{ $userReview && $userReview->watch_date ? 'block' : 'none' }}; margin-top: 17px;">
                                     <!-- Input fields related to "Want to Watch" section go here -->
-                                    <div class="watch" style="    display: flex; gap: 6px">
-                                        <label for="watch_date" style="color: white">Watch Date:</label>
+                                    <div class="watch row" style="display: flex; gap: 6px">
+                                        <label for="watch_date" class="watch" style="">Watch Date:</label>
                                         <input type="date" id="watchDate" name="watch_date"
                                             value="{{ old('watch_date', $userReview ? $userReview->watch_date : '') }}"
                                             style="width: 15rem">
@@ -255,22 +295,24 @@
                                                 <span class="icon">★</span>
                                             </label>
                                         </div>
-                                        <div id="alreadyDate"
-                                            style="display: {{ $userReview && $userReview->watch_date ? 'block' : 'none' }}; margin-top: 3px;">
-                                            <!-- Input fields related to "Want to Watch" section go here -->
-                                            <label for="watch_date" style="color: white">Watch Date:</label>
-                                            <input type="date" id="watchDate" name="watch_date"
-                                                value="{{ old('watch_date', $userReview ? $userReview->watch_date : '') }}">
-                                        </div>
                                     </div>
-                                        <label for="comment" style="color: white">Comment:</label>
-                                        <textarea id="comment" name="comment" style="width: 388px; height: 98px">{{ old('comment', $userReview ? $userReview->comment : '') }}</textarea>
-                                    <button type="submit" style="background-color: #dd003f;
+                                    <div id="alreadyDate" class="col-md-3 row"
+                                        style="display: {{ $userReview && $userReview->watch_date ? 'block' : 'none' }}; margin-top: 3px;">
+                                        <!-- Input fields related to "Want to Watch" section go here -->
+                                        <label for="watch_date" class="watch" style="">Watch Date:</label>
+                                        <input type="date" id="watchDate" name="watch_date"
+                                            value="{{ old('watch_date', $userReview ? $userReview->watch_date : '') }}">
+                                    </div>
+                                    <label for="comment" class="watch" style="">Comment:</label>
+                                    <textarea id="comment" name="comment" style="width: 388px; height: 98px">{{ old('comment', $userReview ? $userReview->comment : '') }}</textarea>
+                                    <button type="submit"
+                                        style="background-color: #dd003f;
                                     color: #ffffff;
                                     padding: 5px 19px;
                                     -webkit-border-radius: 20px;
                                     -moz-border-radius: 20px;
-                                    border-radius: 20px; margin: 4px">Submit Review</button>
+                                    border-radius: 20px; margin: 4px">Submit
+                                        Review</button>
                                 </div>
                                 <div class="movie-tabs">
                                     <div class="tabs">
