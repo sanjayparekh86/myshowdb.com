@@ -426,9 +426,6 @@
                                                         </p>
                                                     </div>
                                                 @endif
-                                                <div class="ads">
-                                                    <img src="images/uploads/ads1.png" alt="">
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
