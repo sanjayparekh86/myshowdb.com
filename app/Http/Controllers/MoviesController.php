@@ -7,6 +7,7 @@ use App\Models\UserRating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class MoviesController extends Controller
 {
@@ -14,7 +15,8 @@ class MoviesController extends Controller
     {
         $userId = auth()->check() ? auth()->user()->id : null;
 
-        $shows = ShowList::with(['userRating' => function ($query) use ($userId) {
+        $shows = ShowList::with([
+            'userRating' => function ($query) use ($userId) {
                 if ($userId) {
                     $query->where('user_id', $userId);
                 }
@@ -87,19 +89,17 @@ class MoviesController extends Controller
         $search = $request->input('search');
         $searchType = $request->input('show_type');
 
-        $movieResults = [];  // Initialize as empty array
-        $seriesResults = []; // Initialize as empty array
+        $movieResults = [];
+        $seriesResults = [];
 
 
         if ($searchType == 'movie') {
-            // Fetch movie results from the API
             $movieResults = Http::withToken(config('services.movie_api.token'))
                 ->get('https://api.themoviedb.org/3/search/movie?query=' . $search . '&append_to_response=credits,images,videos')
                 ->json();
 
             $searchType = 'movie';
         } elseif ($searchType == 'series') {
-            // Fetch TV series results from the API
             $seriesResults = Http::withToken(config('services.movie_api.token'))
                 ->get('https://api.themoviedb.org/3/search/tv?query=' . $search . '&append_to_response=credits,images,videos')
                 ->json();
@@ -118,14 +118,18 @@ class MoviesController extends Controller
 
     public function detail(Request $request)
     {
-        $searchType = $request->input('type'); // Assuming 'type' is the parameter name for the show type
+        $searchType = $request->input('type');
         $id = $request->input('id');
         $userReview = null;
 
-        $movieResults = [];  // Initialize as an empty array
-        $seriesResults = []; // Initialize as an empty array
+        $allSession = session()->all();
+        // dump($allSession);
+
+        $movieResults = [];
+        $seriesResults = [];
 
         $showDetails = ShowList::where('id', $id)->first();
+
         if ($showDetails) {
 
             $showDetails = json_decode($showDetails->other_details, true);
@@ -143,15 +147,25 @@ class MoviesController extends Controller
             // dump($movieResults);
             // dump($searchType);
         } else {
+            if (empty($showDetails)) {
+                if (session()->has('unsaved_review')) {
+
+                    $userReview['watch_status'] = session()->get('unsaved_review')['watch_status'];
+                    $userReview['watch_date'] = session()->get('unsaved_review')['watch_date'];
+                    $userReview['user_rating'] = session()->get('unsaved_review')['user_rating'];
+                    $userReview['comment'] = session()->get('unsaved_review')['comment'];
+                    $userReview = json_decode(json_encode($userReview));
+                }
+            }
             if ($searchType == 'movie') {
-                // Fetch movie results from the API
+
                 $movieResults = Http::withToken(config('services.movie_api.token'))
                     ->get("https://api.themoviedb.org/3/movie/{$id}?append_to_response=credits,images,videos")
                     ->json();
 
                 $searchType = 'movie';
             } elseif ($searchType == 'series') {
-                // Fetch TV series results from the API
+
                 $seriesResults = Http::withToken(config('services.movie_api.token'))
                     ->get("https://api.themoviedb.org/3/tv/{$id}?append_to_response=credits,images,videos")
                     ->json();
@@ -163,12 +177,22 @@ class MoviesController extends Controller
 
         // dump($seriesResults);
         // dump($movieResults);
-
         if (Auth::check() == false) {
+            // Get the current URL with query parameters
+            $currentUrl = url()->full();
+
+            // Include the movie ID in the current URL if it's not already present
+            if (!str::contains($currentUrl, 'id=')) {
+                $currentUrl .= (Str::contains($currentUrl, '?') ? '&' : '?') . 'id=' . $id;
+            }
+
+            // Set the intended URL in the session if it's not already set
             if (!session()->has('url.intended')) {
-                session(['url.intended' => url()->current()]);
+                session(['url.intended' => $currentUrl]);
             }
         }
+
+
 
         return view('front.movie.show-detail', [
             'movieResults' => $movieResults,
@@ -176,6 +200,7 @@ class MoviesController extends Controller
             'searchType' => $searchType,
             'userReview' => $userReview,
             'showDetails' => $showDetails,
+            'allSession' => $allSession
         ]);
     }
 
@@ -231,6 +256,10 @@ class MoviesController extends Controller
 
         $existingUserRating = UserRating::where('show_list_id', $show->id)->where('user_id', $userId)->first();
 
+        if (session()->get('unsaved_review')) {
+            Session()->forget('unsaved_review');
+        }
+
         if ($existingUserRating) {
             $existingUserRating->update([
                 'user_rating' => $userRating,
@@ -257,6 +286,21 @@ class MoviesController extends Controller
             'status' => true,
             'message' => 'success',
             'review' => $review,
+        ]);
+    }
+
+    public function sessionStore(Request $request)
+    {
+        $data = $request->all();
+
+        // Store the data in the session
+        $request->session()->put('unsaved_review', $data);
+        // dd($data);
+        // Return a response indicating success
+        return response()->json([
+            'status' => true,
+            'message' => 'Data stored in session successfully',
+            'data' => $data,
         ]);
     }
 

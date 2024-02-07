@@ -119,11 +119,11 @@ class HomeController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function googlecallback()
+    public function googlecallback(Request $request)
     {
         try {
             $user = Socialite::driver('google')->user();
-            return $this->handleRegistration($user, 'google');
+            return $this->handleRegistration($user, 'google', $request);
         } catch (Exception $e) {
             dd($e->getMessage());
         }
@@ -134,24 +134,27 @@ class HomeController extends Controller
         return Socialite::driver('facebook')->redirect();
     }
 
-    public function facebookcallback()
+    public function facebookcallback(Request $request)
     {
         try {
             $user = Socialite::driver('facebook')->user();
-            return $this->handleRegistration($user, 'facebook');
+            return $this->handleRegistration($user, 'facebook', $request);
         } catch (Exception $e) {
             dd($e->getMessage());
         }
     }
 
-    private function handleRegistration($userData, $source)
+    private function handleRegistration($userData, $source, Request $request)
     {
-        $findUser = User::where('social_id', $userData->id)
-            ->where('register_from', $source)
-            ->first();
+        $existingUser = User::where('email', $userData->email)->first();
+        if ($existingUser) {
+            $existingUser->update([
+                'social_id' => $userData->id,
+                'register_from' => $source,
+                'password' => Hash::make('123456dummy'),
+            ]);
 
-        if ($findUser) {
-            Auth::login($findUser);
+            Auth::login($existingUser);
         } else {
             $newUser = User::create([
                 'email' => $userData->email,
@@ -162,9 +165,17 @@ class HomeController extends Controller
 
             Auth::login($newUser);
         }
+        if ($request->session()->has('url.intended')) {
+            // Get the intended URL from the session
+            $redirectUrl = $request->session()->pull('url.intended');
+            // Redirect to the intended URL
+            return redirect($redirectUrl);
+        }
+
 
         return redirect()->route('movies.home');
     }
+
 
     public function profile()
     {

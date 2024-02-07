@@ -78,8 +78,8 @@
             </form>
             <div class="row">
                 <p>Or via social</p>
-                <div class="social-btn-2">
-                    <a class="fb" href="#"><i class="ion-social-facebook"></i>Facebook</a>
+                <div class="social-btn-2 d-flex" style="display: flex; justify-content: center;">
+                    {{-- <a class="fb" href="#"><i class="ion-social-facebook"></i>Facebook</a> --}}
                     <a class="tw" href="{{ url('auth/google') }}"><i class="fa-brands fa-google"></i>google</a>
                 </div>
             </div>
@@ -146,8 +146,8 @@
 
                 <div class="row">
                     <p>Or via social</p>
-                    <div class="social-btn-2">
-                        <a class="fb" href="#"><i class="ion-social-facebook"></i>Facebook</a>
+                    <div class="social-btn-2" style="display: flex; justify-content: center;">
+                        {{-- <a class="fb" href="#"><i class="ion-social-facebook"></i>Facebook</a> --}}
                         <a class="tw" href="{{ url('auth/google') }}"><i
                                 class="fa-brands fa-google"></i>google</a>
                     </div>

@@ -58,7 +58,7 @@ Route::get('auth/facebook/callback', [HomeController::class, 'facebookcallback']
 
 // News Route
 Route::get('/blogs', [BlogsController::class, 'index'])->name('blogs.index');
-
+Route::post('/session-data', [MoviesController::class, 'sessionStore'])->name('movie.session');
 // Change password route
 
 

@@ -105,11 +105,11 @@
         text-shadow: 0 0 5px #09f;
     }
 
-    .watch{
+    .watch {
         color: white
     }
 
-    @media(max-width: 768px){
+    @media(max-width: 768px) {
         .watch {
             color: black;
         }
@@ -222,7 +222,7 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="watch_status"
                                                 id="wantToWatch" value="0"
-                                                {{ old('watch_status', $userReview ? $userReview->watch_status : '') == '0' ? 'checked' : '' }}>
+                                                {{ old('watch_status', ($userReview ? $userReview->watch_status : '') == '0') ? 'checked' : '' }}>
                                             <label class="watch" for="wantToWatch" style="">
                                                 Want to Watch
                                             </label>
@@ -645,9 +645,8 @@
         var movieId = @json($movieResults['id'] ?? ($seriesResults['id'] ?? null));
 
         if (!{{ auth()->check() ? 'true' : 'false' }}) {
+            storeFormDataInSession(formArray);
             $(".loginLink").click()
-
-            {{ Session(['url.intended' => url()->current()]) }}
             return false;
         }
         $("button[type='submit']").prop('disabled', true);
@@ -669,6 +668,30 @@
                 console.log("Something went wrong");
             }
         });
+
+        submitReview(formArray, movieId);
     });
+
+    function storeFormDataInSession(formData) {
+        $.ajax({
+            url: '{{ route('movie.session') }}',
+            type: 'post',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === true) {
+                    console.log(response.message);
+                    // Redirect to login page or trigger login popup
+                    $(".loginLink").click();
+                } else {
+                    console.log('Failed to store data in session');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('An error occurred while processing your request');
+            }
+        });
+    }
 </script>
 @endsection
